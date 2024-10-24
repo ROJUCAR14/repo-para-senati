@@ -1,0 +1,314 @@
+create database CHENATI
+
+use CHENATI
+
+
+create table curso(
+id_curso int identity primary key,
+Nombre varchar(50)not null,
+Descripcion varchar(100)not null,
+Semestre varchar(20)not null
+)
+
+create table nota(
+id_nota int identity primary key,
+Nota_1 int not null,
+Nota_2 int not null,
+Nota_3 int not null,
+Nota_4 int not null
+)
+
+create table colegio(
+id_colegio int identity primary key,
+I_E varchar(50) not null,
+Ubicacion varchar(100) not null,
+Telefono int not null
+)
+
+create table matricula(
+id_matricula int identity primary key,
+Estado varchar(30) not null,
+Fecha date null,
+Pago varchar(10) null
+)
+
+create table tutor(
+id_tutor int identity primary key,
+Nombre varchar(40) not null,
+Apellido varchar(40) not null,
+Telefono varchar(40) not null,
+Correo varchar(100) not null,
+Direccion varchar(100) not null
+)
+
+create table distrito(
+id_distrito int identity primary key,
+Nombre varchar(100)not null
+)
+
+create table alumno(
+id_alumno int identity primary key,
+id_matricula int not null,
+Nombre varchar(40) not null,
+Apellido varchar(40) not null,
+Sexo char(1)not null,
+F_nacimiento date not null,
+Telefono varchar(9) not null,
+Correo varchar(100) not null,
+Direccion varchar(100) not null,
+id_distrito int not null,
+id_curso int not null,
+id_nota int not null,
+id_colegio int not null,
+id_tutor int not null
+)
+
+create table docente(
+id_docente int identity primary key,
+id_colegio int not null,
+Nombre varchar(40) not null,
+Apellido varchar(40) not null,
+Sexo char(1) not null,
+DNI int not null,
+E_civil varchar(30)not null,
+Telefono varchar(9)not null,
+Correo varchar(100) not null,
+Direccion varchar(100) not null,
+id_distrito int not null,
+id_curso int not null,
+)
+
+create table asistencia(
+id_asistencia int identity primary key,
+id_alumno int not null,
+Fecha date not null,
+Asistio varchar(10)not null
+)
+
+
+--CREACION CLAVES FORANEAS ALUMNO
+alter table alumno
+add foreign key (id_colegio)
+references colegio(id_colegio)
+alter table alumno
+add foreign key (id_distrito)
+references distrito(id_distrito)
+alter table alumno
+add foreign key (id_curso)
+references curso(id_curso)
+alter table alumno
+add foreign key (id_nota)
+references nota(id_nota)
+alter table alumno
+add foreign key (id_tutor)
+references tutor(id_tutor)
+alter table alumno
+add foreign key (id_matricula)
+references matricula(id_matricula)
+
+--CREACION CLAVES FORANEAS DOCENTE
+alter table docente
+add foreign key (id_colegio)
+references colegio(id_colegio)
+alter table docente
+add foreign key (id_distrito)
+references distrito(id_distrito)
+alter table docente
+add foreign key (id_curso)
+references curso(id_curso)
+
+--CREACION CLAVES FORANEAS ASISTENCIA
+alter table asistencia
+add foreign key (id_alumno)
+references alumno(id_alumno)
+
+
+
+
+--INSERTAR DATOS TABLA CURSO
+INSERT INTO curso (Nombre, Descripcion, Semestre) VALUES
+('Introducción a la Programación', 'Fundamentos de programación usando Python.', 'Primero'),
+('Estructuras de Datos', 'Estudio de las estructuras de datos y algoritmos básicos.', 'Segundo'),
+('Bases de Datos Relacionales', 'Diseño y gestión de bases de datos con SQL.', 'Segundo'),
+('Desarrollo Web Frontend', 'Creación de interfaces web usando HTML, CSS y JavaScript.', 'Tercero'),
+('Desarrollo Web Backend', 'Construcción de aplicaciones del lado del servidor con Node.js.', 'Tercero'),
+('Seguridad Informática', 'Principios de seguridad en sistemas y redes.', 'Cuarto'),
+('Redes de Computadoras', 'Fundamentos de redes y protocolos de comunicación.', 'Cuarto'),
+('Inteligencia Artificial', 'Introducción a los conceptos y técnicas de IA.', 'Quinto'),
+('Sistemas Operativos', 'Estudio de los principios y funciones de los sistemas operativos.', 'Quinto'),
+('Gestión de Proyectos de TI', 'Metodologías para la gestión de proyectos tecnológicos.', 'Sexto');
+
+
+--INSERTAR DATOS TABLA NOTA
+INSERT INTO nota (Nota_1, Nota_2, Nota_3, Nota_4) VALUES
+(15, 18, 20, 14),
+(10, 12, 15, 8),
+(20, 20, 18, 19),
+(14, 16, 13, 17),
+(9, 11, 14, 15),
+(17, 19, 20, 16),
+(13, 14, 12, 10),
+(15, 15, 15, 15),
+(11, 12, 10, 9),
+(20, 19, 18, 20);
+
+
+--INSERTAR DATOS TABLA COLEGIO
+INSERT INTO colegio (I_E, Ubicacion, Telefono) VALUES
+('SENATI', 'Paradero Senati, Av Pachacutec, Villa EL Salvador', 2877836);
+
+
+--INSERTAR DATOS TABLA MATRICULA
+INSERT INTO matricula (Estado, Fecha, Pago) VALUES
+('Matriculado', '2024-01-10', 'Cancelado'),
+('Matriculado', '2024-01-15', 'Pendiente'),
+('Matriculado', '2024-01-20', 'Cancelado'),
+('Matriculado', '2024-01-25', 'Pendiente'),
+('Matriculado', '2024-01-30', 'Cancelado'),
+('Matriculado', '2024-02-01', 'Pendiente'),
+('Matriculado', '2024-02-05', 'Cancelado'),
+('Matriculado', '2024-02-10', 'Pendiente'),
+('Matriculado', '2024-02-15', 'Cancelado'),
+('Matriculado', '2024-02-20', 'Pendiente');
+
+
+
+--INSERTAR DATOS TABLA TUTOR
+INSERT INTO tutor (Nombre, Apellido, Telefono, Correo, Direccion) VALUES
+('Maria', 'Cruz Espinoza', '987654321', 'mari@gmail.com', 'Av. Los Olivos 123'),
+('Lucia', 'Pérez Mendoza', '912345678', 'lucy@gmail.com', 'Calle Los Robles 456'),
+('Jorge', 'Garcia Diaz', '923456789', 'jorge@gmail.com', 'Jr. Las Flores 789'),
+('Veronica', 'Ramírez Vasquez', '934567890', 'veromirez@gmail.com', 'Av. Las Palmeras 101'),
+('Luis', 'Quispe Mamani', '945678901', 'luis@gmail.com', 'Calle La Paz 202'),
+('Ana', 'Rojas Lopez', '956789012', 'anita@gmail.com', 'Jr. Los Pinos 303'),
+('José', 'Martínez Pachacutec', '967890123', 'martin@gmail.com', 'Av. Los Cedros 404'),
+('Patricia', 'Rodriguez Aguilar', '978901234', 'patri@gmail.com', 'Calle Las Magnolias 505'),
+('Raul', 'Gomez Carrasco', '989012345', 'ramez@gmail.com', 'Jr. Los Sauces 606'),
+('Dina', 'Castillo Vizcarra', '990123456', 'pipipi@gmail.com', ' Jirón de la Unión 707');
+
+
+--INSERTAR DATOS TABLA DISTRITO
+INSERT INTO distrito (Nombre) VALUES
+('Miraflores'),
+('San Isidro'),
+('Barranco'),
+('San Borja'),
+('Surco'),
+('La Molina'),
+('Pueblo Libre'),
+('Magdalena del Mar'),
+('Jesús María'),
+('San Miguel'),
+('Villa El Salvador'),
+('Villa Maria del Triunfo');
+
+
+--INSERTAR DATOS TABLA ALUMNO
+INSERT INTO alumno (id_matricula, Nombre, Apellido, Sexo, F_nacimiento, Telefono, Correo, Direccion, id_distrito, id_curso, id_nota, id_colegio, id_tutor) VALUES
+(1, 'Carlos', 'Gonzales López', 'M', '2005-05-12', '912345678', 'carlos@gmail.com', 'Av. Los Rosales 123', 11, 1, 1, 1, 1),
+(2, 'María', 'Fernández Quispe', 'F', '2004-03-18', '923456789', 'maria@gmail.com', 'Calle Las Magnolias 234', 12, 2, 2, 1, 2),
+(3, 'Juan', 'Martínez Solis', 'M', '2003-07-25', '934567890', 'juan@gmail.com', 'Jr. Los Sauces 345', 4, 3, 3, 1, 3),
+(4, 'Lucía', 'Pérez Rojas', 'F', '2005-11-10', '945678901', 'lucia@gmail.com', 'Av. Los Olivos 456', 2, 4, 4, 1, 4),
+(5, 'Pedro', 'García Ramos', 'M', '2002-09-22', '956789012', 'pedro@gmail.com', 'Jr. Las Palmeras 567', 5, 5, 5, 1, 5),
+(6, 'Ana', 'Lopez Mamani', 'M', '2004-01-30', '967890123', 'ana@gmail.com', 'Calle Las Flores 678', 5, 6, 6, 1, 6),
+(7, 'Luis', 'Rojas Castillo', 'M', '2003-05-15', '978901234', 'luis@gmail.com', 'Av. Las Palmeras 789', 1, 7, 7, 1, 7),
+(8, 'Sofía', 'Ramírez Espinoza', 'M', '2002-08-19', '989012345', 'sofia@gmail.com', 'Calle Los Pinos 890', 5, 8, 8, 1, 8),
+(9, 'Fernando', 'Díaz Aguilar', 'M', '2004-12-02', '990123456', 'fernando@gmail.com', 'Jr. Las Magnolias 901', 4, 9, 9, 1, 9),
+(10, 'Carmen', 'Vásquez Carrasco', 'F', '2003-06-14', '900234567', 'carmen@gmail.com', 'Av. Los Cedros 012', 11, 10, 10, 1, 10);
+
+
+--INSERTAR DATOS TABLA DOCENTE
+INSERT INTO docente (id_colegio, Nombre, Apellido, Sexo, DNI, E_civil, Telefono, Correo, Direccion, id_distrito, id_curso) VALUES
+(1, 'Jorge', 'Perez Lopez', 'M', 12345678, 'Soltero', '912345678', 'jorge@gmail.com', 'Av. Los Olivos 123', 1, 1),
+(1, 'Mariana', 'Ramirez Diaz', 'M', 23456789, 'Casado', '923456789', 'mariana@gmail.com', 'Calle Los Cedros 456', 2, 2),
+(1, 'Miguel', 'Flores Quispe', 'M', 34567890, 'Soltero', '934567890', 'miguel@gmail.com', 'Jr. Las Palmeras 789', 3, 3),
+(1, 'Paula', 'Gonzalez Mendoza', 'F', 45678901, 'Divorciada', '945678901', 'paula@gmail.com', 'Av. Los Sauces 101', 4, 4),
+(1, 'Hugo', 'Lopez Garcia', 'M', 56789012, 'Soltero', '956789012', 'hugo@gmail.com', 'Jr. Las Magnolias 202', 5, 5),
+(1, 'Lucas ', 'Morales Aguilar', 'M', 67890123, 'Casado', '967890123', 'cuack@gmail.com', 'Av. Las Flores 303', 6, 6),
+(1, 'Ricardo', 'Sanchez Paredes', 'M', 78901234, 'Soltero', '978901234', 'ricardo@gmail.com', 'Calle Las Pinos 404', 7, 7),
+(1, 'Javier ', 'Vásquez Rojas', 'M', 89012345, 'Viudo', '989012345', 'javi@gmail.com', 'Av. Los Robles 505', 8, 8),
+(1, 'Raúl', 'Martínez Espinoza', 'M', 90123456, 'Soltero', '990123456', 'raul@gmail.com', 'Jr. Las Palmeras 606', 9, 9),
+(1, 'Elizabeth', 'Ríos Maldonado', 'F', 98765432, 'Casada', '900234567', 'eli@gmail.com', 'Calle Las Magnolias 707', 10, 10);
+
+
+--INSERTAR DATOS TABLA ASISTENCIA
+INSERT INTO asistencia (id_alumno, Fecha, Asistio) VALUES
+(1, '2024-10-24', 'Sí'),
+(2, '2024-10-24', 'Sí'),
+(3, '2024-10-24', 'No'),
+(4, '2024-10-24', 'Sí'),
+(5, '2024-10-24', 'No'),
+(6, '2024-10-24', 'Sí'),
+(7, '2024-10-24', 'Sí'),
+(8, '2024-10-24', 'Sí'),
+(9, '2024-10-24', 'No'),
+(10, '2024-10-24', 'Sí');
+
+
+
+--CONSULTITAS
+--CONSULTA 1:
+SELECT 
+    a.Nombre AS Nombre_Alumno,
+    a.Apellido AS Apellido_Alumno,
+    c.Nombre AS Nombre_Curso,
+    AVG((n.Nota_1 + n.Nota_2 + n.Nota_3 + n.Nota_4) / 4.0) AS Promedio_Notas
+FROM 
+    alumno a
+JOIN 
+    nota n ON a.id_nota = n.id_nota
+JOIN 
+    curso c ON a.id_curso = c.id_curso
+GROUP BY 
+    a.Nombre, a.Apellido, c.Nombre
+
+--CONSULTA 2:
+SELECT 
+    d.Nombre AS Nombre_Docente,
+    d.Apellido AS Apellido_Docente,
+    di.Nombre AS Nombre_Distrito
+FROM 
+    docente d
+JOIN 
+    distrito di ON d.id_distrito = di.id_distrito
+WHERE 
+    d.Sexo = 'M' AND d.E_civil = 'Casado' AND di.id_distrito = 2
+
+
+--CONSULTA 3:
+SELECT 
+    a.Nombre AS Nombre_Alumno,
+    a.Apellido AS Apellido_Alumno,
+    c.Nombre AS Nombre_Curso
+FROM 
+    alumno a
+JOIN 
+    nota n ON a.id_nota = n.id_nota
+JOIN 
+    curso c ON a.id_curso = c.id_curso
+WHERE 
+    (n.Nota_1 < 11 OR n.Nota_2 < 11 OR n.Nota_3 < 11 OR n.Nota_4 < 11) 
+    AND c.id_curso = 5
+
+--CONSULTA 4:
+SELECT 
+    d.Nombre AS Nombre_Docente,
+    d.Apellido AS Apellido_Docente,
+    c.Nombre AS Nombre_Curso
+FROM 
+    docente d
+JOIN 
+    curso c ON d.id_curso = c.id_curso
+
+
+--CONSULTA 5:
+SELECT 
+    a.Nombre AS Nombre_Alumno,
+    a.Apellido AS Apellido_Alumno,
+    asis.Fecha
+FROM 
+    alumno a
+JOIN 
+    asistencia asis ON a.id_alumno = asis.id_alumno
+WHERE 
+    asis.Asistio = 'No'
