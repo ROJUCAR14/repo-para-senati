@@ -1,0 +1,659 @@
+create database restaurante 
+
+use restaurante 
+
+create table distrito(
+id_distrito int identity primary key,
+nom_distrito varchar(50)not null
+)
+
+create table pais(
+id_pais int identity primary key,
+nom_pais varchar(50)not null
+)
+
+create table estado(
+id_estado int identity primary key,
+nom_estado varchar(50)not null
+)
+
+create table cliente(
+id_cliente int identity primary key,
+nom_cliente varchar(50)not null,
+ape_cliente varchar(50)not null,
+tipo_documento varchar(40)not null,
+nro_documento varchar(40)not null,
+ubicacion varchar(100)not null,
+tipo_ubicacion varchar(100)not null,
+id_distrito int not null,
+id_pais int not null
+)
+
+create table mozo(
+id_mozo int identity primary key,
+nom_mozo varchar(50)not null,
+ape_mozo varchar(50)not null,
+tipo_documento varchar(40)not null,
+nro_documento varchar(40)not null,
+ubicacion varchar(100)not null,
+tipo_ubicacion varchar(100)not null,
+id_distrito int not null,
+id_pais int not null
+)
+
+create table repartidor(
+id_repartidor int identity primary key,
+nom_repartidor varchar(50)not null,
+ape_repartidor varchar(50)not null,
+tipo_documento varchar(40)not null,
+nro_documento varchar(40)not null,
+ubicacion varchar(100)not null,
+tipo_ubicacion varchar(100)not null,
+id_distrito int not null,
+id_pais int not null
+)
+
+create table pedido_repartidor_cliente(
+id_prc int identity primary key,
+id_repartidor int not null,
+nro_pedido int not null,
+detalles_pedido varchar(100)not null,
+id_cliente int not null,
+lugar_entrega varchar(100)not null,
+)
+
+create table pedido(
+nro_pedido int identity primary key,
+nom_producto varchar(100)not null
+)
+
+create table delivery(
+id_delivery int identity primary key,
+nom_producto varchar (100) not null
+)
+
+create table delivery_repartidor_cliente(
+id_drc int identity primary key,
+id_repartidor int not null,
+id_delivery int not null,
+detalles_delivery varchar(100)not null,
+id_cliente int not null,
+lugar_entrega varchar(100)not null,
+)
+
+create table reservacion(
+id_reservacion int identity primary key,
+fecha date not null,
+hora time not null,
+nro_personas int not null,
+id_cliente int not null,
+nro_mesa int not null,
+id_estado int not null
+)
+
+create table mesa(
+nro_mesa int identity primary key,
+capacidad int not null
+)
+
+create table mesa_cliente_mozo(
+id_msm int identity primary key,
+nro_mesa int not null,
+id_cliente int not null,
+id_mozo int not null,
+detalles varchar(100)not null,
+monto_total int not null,
+nro_personas int not null
+)
+
+create table factura(
+nro_factura int identity primary key,
+detalles varchar(100)not null,
+monto int not null,
+hora time not null,
+fecha date not null,
+id_cliente int not null
+)
+
+create table boleta(
+nro_boleta int identity primary key,
+detalles varchar(100)not null,
+monto int not null,
+hora time not null,
+fecha date not null,
+id_cliente int not null
+)
+
+create table menu(
+id_menu int identity primary key,
+detalles varchar(100)not null,
+)
+
+--creando registros para cada tabla--
+INSERT INTO distrito (nom_distrito) VALUES
+('Miraflores'),
+('San Isidro'),
+('Barranco'),
+('Lima Cercado'),
+('San Borja'),
+('La Molina'),
+('Surco'),
+('San Miguel'),
+('Jesús María'),
+('Pueblo Libre'),
+('Magdalena del Mar'),
+('Chorrillos'),
+('Ventanilla'),
+('Callao'),
+('El Agustino'),
+('San Juan de Lurigancho'),
+('San Luis'),
+('Rímac'),
+('Breña'),
+('La Victoria');
+
+INSERT INTO pais (nom_pais) VALUES
+('Perú'),
+('Argentina'),
+('Chile'),
+('Colombia'),
+('Ecuador'),
+('Bolivia'),
+('Paraguay'),
+('Uruguay'),
+('Brasil'),
+('Venezuela');
+
+INSERT INTO estado (nom_estado) VALUES
+('reservado'),
+('disponible');
+
+INSERT INTO pedido (nom_producto) VALUES
+('Ceviche'),
+('Lomo Saltado'),
+('Aji de Gallina'),
+('Pollo a la Brasa'),
+('Tacu Tacu'),
+('Anticuchos'),
+('Papa a la Huancaina'),
+('Arroz con Pollo'),
+('Rocoto Relleno'),
+('Sanguchón de Chicharrón'),
+('Seco de Cabrito'),
+('Jalea Mixta'),
+('Pachamanca'),
+('Causa Limeña'),
+('Olluquito con Charqui'),
+('Tortilla de Verduras'),
+('Sopa a la Criolla'),
+('Pescado a la Sal'),
+('Chupe de Camarones');
+
+INSERT INTO delivery (nom_producto) VALUES
+('Ceviche'),
+('Lomo Saltado'),
+('Aji de Gallina'),
+('Pollo a la Brasa'),
+('Tacu Tacu'),
+('Anticuchos'),
+('Papa a la Huancaina'),
+('Arroz con Pollo'),
+('Rocoto Relleno'),
+('Jalea Mixta'),
+('Seco de Cabrito'),
+('Causa Limeña'),
+('Olluquito con Charqui'),
+('Pescado a la Sal'),
+('Chupe de Camarones'),
+('Sanguchón de Chicharrón'),
+('Sopa a la Criolla'),
+('Pachamanca'),
+('Tortilla de Verduras'),
+('Causa Rellena');
+
+INSERT INTO cliente (nom_cliente, ape_cliente, tipo_documento, nro_documento, ubicacion, tipo_ubicacion, id_distrito, id_pais) VALUES
+('Juan', 'Pérez', 'DNI', '12345678', 'Av. José Larco 123', 'Casa', 1, 1),
+('Ana', 'García', 'Carnet de extranjeria', '87654321', 'Calle Lima 456', 'Departamento', 2, 2),
+('Luis', 'Torres', 'Carnet de extranjeria', '11223344', 'Jr. Callao 789', 'Casa', 3, 3),
+('María', 'Lopez', 'DNI', '55667788', 'Av. Brasil 101', 'Oficina', 4, 1),
+('Carlos', 'Martínez', 'DNI', '99887766', 'Calle Santa Rosa 202', 'Departamento', 5, 1),
+('Lucía', 'Hernández', 'DNI', '22334455', 'Jr. Zárate 303', 'Casa', 6, 1),
+('Fernando', 'González', 'DNI', '33445566', 'Av. Tacna 404', 'Casa', 7, 1),
+('Isabel', 'Ramírez', 'DNI', '44556677', 'Calle Unión 505', 'Oficina', 8, 1),
+('Diego', 'Jiménez', 'DNI', '55667788', 'Av. Arequipa 606', 'Oficina', 9, 1),
+('Patricia', 'Díaz', 'DNI', '66778899', 'Jr. Miraflores 707', 'Casa', 10, 1),
+('Andrés', 'Cruz', 'DNI', '77889900', 'Av. La Marina 808', 'Casa', 11, 1),
+('Sofía', 'Rojas', 'DNI', '88990011', 'Calle San Martín 909', 'Departamento', 12, 1),
+('Javier', 'Castillo', 'Carnet de extranjeria', '99001122', 'Av. Universitaria 1010', 'Casa', 13, 5),
+('Verónica', 'Vásquez', 'Carnet de extranjeria', '10111213', 'Calle Los Olivos 1111', 'Casa', 14, 4),
+('Eduardo', 'Salazar', 'DNI', '12131415', 'Av. Pardo 1212', 'Casa', 15, 1),
+('Raquel', 'Córdova', 'DNI', '13141516', 'Jr. Lima 1313', 'Oficina', 16, 1),
+('Nicolás', 'Maldonado', 'Carnet de extranjeria', '14151617', 'Calle San Juan 1414', 'Casa', 17, 5),
+('Claudia', 'Bermúdez', 'DNI', '15161718', 'Av. Libertad 1515', 'Oficina', 18, 1),
+('Hugo', 'Pachacutec', 'DNI', '16171819', 'Jr. Esperanza 1616', 'Casa', 19, 1),
+('Flavia', 'Quiroz', 'Carnet de extranjeria', '17181920', 'Calle Primavera 1717', 'Departamento', 20, 6);
+
+INSERT INTO mozo (nom_mozo, ape_mozo, tipo_documento, nro_documento, ubicacion, tipo_ubicacion, id_distrito, id_pais) VALUES
+('Pedro', 'Alvarado', 'DNI', '20202020', 'Av. San Martín 1', 'Restaurante', 1, 1),
+('María', 'Mendoza', 'Carnet de extranjeria', '30303030', 'Calle Bolívar 2', 'Restaurante', 2, 2),
+('Jorge', 'Gonzalez', 'Carnet de extranjeria', '40404040', 'Av. Perú 3', 'Restaurante', 3, 3),
+('Laura', 'Cifuentes', 'Carnet de extranjeria', '50505050', 'Jr. San José 4', 'Restaurante', 4, 4),
+('Samuel', 'Rodriguez', 'Carnet de extranjeria', '60606060', 'Av. España 5', 'Restaurante', 5, 5),
+('Ana', 'Paredes', 'DNI', '70707070', 'Calle la Paz 6', 'Restaurante', 6, 1),
+('Ricardo', 'Figueroa', 'DNI', '80808080', 'Av. Arequipa 7', 'Restaurante', 7, 1),
+('Verónica', 'Cruz', 'DNI', '90909090', 'Jr. Callao 8', 'Restaurante', 8, 1),
+('Gabriel', 'Bermúdez', 'Carnet de extranjeria', '10101010', 'Av. La Victoria 9', 'Restaurante', 9, 6),
+('Marisol', 'Pérez', 'Carnet de extranjeria', '11111111', 'Calle San Felipe 10', 'Restaurante', 10, 6),
+('Daniel', 'Martínez', 'Carnet de extranjeria', '12121212', 'Av. Tacna 11', 'Restaurante', 11, 5),
+('Teresa', 'Ríos', 'DNI', '13131313', 'Calle Huánuco 12', 'Restaurante', 12, 1),
+('Héctor', 'Calle', 'DNI', '14141414', 'Jr. Ancash 13', 'Restaurante', 13, 1),
+('Sonia', 'Cáceres', 'DNI', '15151515', 'Av. Bolívar 14', 'Restaurante', 14, 1),
+('Omar', 'Rojas', 'DNI', '16161616', 'Calle Santa Rosa 15', 'Restaurante', 15, 1),
+('Claudia', 'Salazar', 'DNI', '17171717', 'Av. Gamarra 16', 'Restaurante', 16, 1),
+('Mauricio', 'Vásquez', 'DNI', '18181818', 'Calle San Martín 17', 'Restaurante', 17, 1),
+('Luz', 'Rodríguez', 'DNI', '19191919', 'Av. Universitaria 18', 'Restaurante', 18, 1),
+('Julio', 'Hernández', 'DNI', '20202020', 'Calle Los Olivos 19', 'Restaurante', 19, 1),
+('Irene', 'Rentería', 'DNI', '21212121', 'Av. Tacna 20', 'Restaurante', 20, 1);
+
+INSERT INTO repartidor (nom_repartidor, ape_repartidor, tipo_documento, nro_documento, ubicacion, tipo_ubicacion, id_distrito, id_pais) VALUES
+('Carlos', 'Núñez', 'Carnet de extranjeria', '22222222', 'Av. Central 1', 'Casa', 1, 10),
+('Sara', 'Tello', 'Carnet de extranjeria', '33333333', 'Calle Lima 2', 'Casa', 2, 10),
+('Felipe', 'Castañeda', 'Carnet de extranjeria', '44444444', 'Jr. Callao 3', 'Casa', 3, 10),
+('Andrea', 'Silva', 'Carnet de extranjeria', '55555555', 'Av. Brasil 4', 'Casa', 4, 10),
+('Hugo', 'Montoya', 'Carnet de extranjeria', '66666666', 'Calle Santa Rosa 5', 'Casa', 5, 10),
+('Patricia', 'Chávez', 'Carnet de extranjeria', '77777777', 'Av. San Juan 6', 'Casa', 6, 10),
+('Oscar', 'Pacheco', 'Carnet de extranjeria', '88888888', 'Calle Unión 7', 'Casa', 7, 10),
+('Liliana', 'Quispe', 'Carnet de extranjeria', '99999999', 'Av. Tacna 8', 'Casa', 8, 10),
+('Rafael', 'Sierra', 'Carnet de extranjeria', '10101010', 'Jr. Olivos 9', 'Casa', 9, 10),
+('Verónica', 'Pérez', 'Carnet de extranjeria', '11111111', 'Av. Libertad 10', 'Casa', 10, 10),
+('Diego', 'Mendoza', 'Carnet de extranjeria', '12121212', 'Calle Huánuco 11', 'Casa', 11, 10),
+('Cecilia', 'Alvarez', 'Carnet de extranjeria', '13131313', 'Av. Brasil 12', 'Casa', 12, 2),
+('Jorge', 'Gómez', 'Carnet de extranjeria', '14141414', 'Calle Santa Cruz 13', 'Casa', 13, 2),
+('Lucía', 'Ayala', 'Carnet de extranjeria', '15151515', 'Av. San Martín 14', 'Casa', 14, 5),
+('Emilio', 'Barrios', 'Carnet de extranjeria', '16161616', 'Calle San Juan 15', 'Casa', 15, 7),
+('Santiago', 'Ruiz', 'Carnet de extranjeria', '17171717', 'Av. Arequipa 16', 'Casa', 16, 8),
+('Nora', 'Cáceres', 'Carnet de extranjeria', '18181818', 'Calle Los Olivos 17', 'Casa', 17, 7),
+('Fabiola', 'Delgado', 'DNI', '19191919', 'Av. Universitaria 18', 'Casa', 18, 1),
+('Ricardo', 'Pérez', 'DNI', '20202020', 'Jr. Tacna 19', 'Casa', 19, 1),
+('Luz', 'Martínez', 'DNI', '21212121', 'Av. Gamarra 20', 'Casa', 20, 1);
+
+INSERT INTO reservacion (fecha, hora, nro_personas, id_cliente, nro_mesa, id_estado) VALUES
+('2024-11-01', '19:00', 4, 1, 1, 1),
+('2024-11-02', '20:00', 2, 2, 2, 1),
+('2024-11-03', '18:30', 6, 3, 3, 1),
+('2024-11-04', '21:00', 3, 4, 4, 1),
+('2024-11-05', '20:30', 5, 5, 5, 1),
+('2024-11-06', '19:15', 2, 6, 6, 1),
+('2024-11-07', '18:45', 8, 7, 7, 1),
+('2024-11-08', '19:30', 4, 8, 8, 1),
+('2024-11-09', '20:00', 10, 9, 9, 1),
+('2024-11-10', '21:00', 1, 10, 10, 1),
+('2024-11-11', '19:00', 7, 11, 1, 1),
+('2024-11-12', '20:00', 5, 12, 2, 1),
+('2024-11-13', '18:30', 3, 13, 3, 1),
+('2024-11-14', '21:00', 4, 14, 4, 1),
+('2024-11-15', '20:30', 2, 15, 5, 1),
+('2024-11-16', '19:15', 6, 16, 6, 1),
+('2024-11-17', '18:45', 8, 17, 7, 1),
+('2024-11-18', '19:30', 9, 18, 8, 1),
+('2024-11-19', '20:00', 3, 19, 9, 1),
+('2024-11-20', '21:00', 4, 20, 10, 1);
+
+INSERT INTO mesa (capacidad) VALUES
+(5),
+(2),
+(10),
+(5),
+(5),
+(2),
+(10),
+(5),
+(10),
+(10),
+(10),
+(10),
+(5),
+(5),
+(5),
+(2),
+(10),
+(10),
+(5),
+(5),
+(2),
+(5);
+
+INSERT INTO mesa_cliente_mozo (nro_mesa, id_cliente, id_mozo, detalles, monto_total, nro_personas) VALUES
+(1, 1, 1, '1 ceviche, 1 lomo saltado y 4 aji de gallina', 100, 4),
+(2, 2, 2, '2 tacu tacu,', 50, 2),
+(3, 3, 1, '6 pachamanca', 150, 6),
+(4, 4, 3, '3 jalea mixta', 80, 3),
+(5, 5, 2, '5 rocoto relleno', 120, 5),
+(6, 6, 3, '2 papa a la huancaina', 60, 2),
+(7, 7, 1, '4 olluco y 4 anticuchos', 200, 8),
+(8, 8, 2, '2 chupe de camarones y 2 picarones', 70, 4),
+(9, 9, 3, '10 causas y 4 pollo a la brasa', 200, 10),
+(10, 10, 1, 'menu', 40, 1),
+(1, 11, 2, '3 pollo a la brasa', 110, 7),
+(2, 12, 3, '1 pollo a la brasa', 55, 5),
+(3, 13, 1, '2 pollo a la brasa y 1 causa', 155, 3),
+(4, 14, 2, '4 sopa ala criolla', 85, 4),
+(5, 15, 3, '2 olluco', 125, 2),
+(6, 16, 1, '6 pescado a la sal', 65, 6),
+(7, 17, 2, '4 pollo a la brasa', 205, 9),
+(8, 18, 3, '3 arroz con pollo', 75, 3),
+(9, 19, 1, '4 anticuchos', 95, 4),
+(10, 20, 2, 'menu', 45, 1);
+
+INSERT INTO factura (detalles, monto, hora, fecha, id_cliente) VALUES
+('Factura por cena de negocios', 100, '20:00', '2024-11-01', 1),
+('Factura por reunión familiar', 50, '20:00', '2024-11-02', 2),
+('Factura por cumpleaños', 150, '18:30', '2024-11-03', 3),
+('Factura por cena romántica', 80, '21:00', '2024-11-04', 4),
+('Factura por aniversario', 120, '20:30', '2024-11-05', 5),
+('Factura por salida con amigos', 60, '19:15', '2024-11-06', 6),
+('Factura por cena especial', 200, '18:45', '2024-11-07', 7),
+('Factura por reunión de trabajo', 70, '19:30', '2024-11-08', 8),
+('Factura por cena casual', 90, '20:00', '2024-11-09', 9),
+('Factura por almuerzo', 40, '21:00', '2024-11-10', 10),
+('Factura por cena de negocios', 110, '20:00', '2024-11-11', 11),
+('Factura por reunión familiar', 55, '20:00', '2024-11-12', 12),
+('Factura por cumpleaños', 155, '18:30', '2024-11-13', 13),
+('Factura por cena romántica', 85, '21:00', '2024-11-14', 14),
+('Factura por aniversario', 125, '20:30', '2024-11-15', 15),
+('Factura por salida con amigos', 65, '19:15', '2024-11-16', 16),
+('Factura por cena especial', 205, '18:45', '2024-11-17', 17),
+('Factura por reunión de trabajo', 75, '19:30', '2024-11-18', 18),
+('Factura por cena casual', 95, '20:00', '2024-11-19', 19),
+('Factura por almuerzo', 45, '21:00', '2024-11-20', 20);
+
+INSERT INTO boleta (detalles, monto, hora, fecha, id_cliente) VALUES
+('Boleta por cena de negocios', 100, '20:00', '2024-11-01', 1),
+('Boleta por reunión familiar', 50, '20:00', '2024-11-02', 2),
+('Boleta por cumpleaños', 150, '18:30', '2024-11-03', 3),
+('Boleta por cena romántica', 80, '21:00', '2024-11-04', 4),
+('Boleta por aniversario', 120, '20:30', '2024-11-05', 5),
+('Boleta por salida con amigos', 60, '19:15', '2024-11-06', 6),
+('Boleta por cena especial', 200, '18:45', '2024-11-07', 7),
+('Boleta por reunión de trabajo', 70, '19:30', '2024-11-08', 8),
+('Boleta por cena casual', 90, '20:00', '2024-11-09', 9),
+('Boleta por almuerzo', 40, '21:00', '2024-11-10', 10),
+('Boleta por cena de negocios', 110, '20:00', '2024-11-11', 11),
+('Boleta por reunión familiar', 55, '20:00', '2024-11-12', 12),
+('Boleta por cumpleaños', 155, '18:30', '2024-11-13', 13),
+('Boleta por cena romántica', 85, '21:00', '2024-11-14', 14),
+('Boleta por aniversario', 125, '20:30', '2024-11-15', 15),
+('Boleta por salida con amigos', 65, '19:15', '2024-11-16', 16),
+('Boleta por cena especial', 205, '18:45', '2024-11-17', 17),
+('Boleta por reunión de trabajo', 75, '19:30', '2024-11-18', 18),
+('Boleta por cena casual', 95, '20:00', '2024-11-19', 19),
+('Boleta por almuerzo', 45, '21:00', '2024-11-20', 20);
+
+INSERT INTO menu (detalles) VALUES
+('Ceviche'),
+('Lomo Saltado'),
+('Aji de Gallina'),
+('Pollo a la Brasa'),
+('Tacu Tacu'),
+('Anticuchos'),
+('Papa a la Huancaina'),
+('Arroz con Pollo'),
+('Rocoto Relleno'),
+('Sanguchón de Chicharrón'),
+('Seco de Cabrito'),
+('Jalea Mixta'),
+('Pachamanca'),
+('Causa Limeña'),
+('Olluquito con Charqui'),
+('Tortilla de Verduras'),
+('Sopa a la Criolla'),
+('Pescado a la Sal'),
+('Chupe de Camarones'),
+('Picarones');
+
+
+INSERT INTO delivery_repartidor_cliente (id_repartidor, id_delivery, detalles_delivery, id_cliente, lugar_entrega) VALUES
+(1, 1, 'Entrega de 2 ceviches y 1 lomo saltado', 1, 'Av. José Larco 123'),
+(2, 2, '1 aji de gallina y 2 papas a la huancaina', 2, 'Calle Lima 456'),
+(3, 3, '3 pollo a la brasa y 1 tacu tacu', 3, 'Jr. Callao 789'),
+(4, 4, '2 anticuchos y 1 jalea mixta', 4, 'Av. Brasil 101'),
+(5, 5, '1 seco de cabrito y 1 causa limeña', 5, 'Calle Santa Rosa 202'),
+(6, 6, '4 olluquitos y 3 chupe de camarones', 6, 'Jr. Zárate 303'),
+(7, 7, '2 rocotos rellenos y 1 sanguchón de chicharrón', 7, 'Av. Tacna 404'),
+(8, 8, '5 ceviches y 2 lomo saltado', 8, 'Calle Unión 505'),
+(9, 9, '3 ajis de gallina y 1 pescado a la sal', 9, 'Av. Arequipa 606'),
+(10, 10, '4 tacu tacu y 2 sopas a la criolla', 10, 'Jr. Miraflores 707'),
+(11, 11, '2 jaleas mixtas y 3 lomo saltado', 11, 'Av. La Marina 808'),
+(12, 12, '1 pachamanca y 2 anticuchos', 12, 'Calle San Martín 909'),
+(13, 13, '2 causas limeñas y 1 arroz con pollo', 13, 'Jr. Lima 1313'),
+(14, 14, '3 tortillas de verduras y 4 picarones', 14, 'Av. Libertad 1515'),
+(15, 15, '1 ceviche y 1 pollo a la brasa', 15, 'Calle Primavera 1717'),
+(16, 16, '2 secos de cabrito y 3 olluquitos', 16, 'Jr. Esperanza 1616'),
+(17, 17, '4 sopas a la criolla y 2 jaleas mixtas', 17, 'Av. Gamarra 1822'),
+(18, 18, '3 ajis de gallina y 1 causa rellena', 18, 'Calle Universitaria 1818'),
+(19, 19, '1 pescado a la sal y 2 chupes de camarones', 19, 'Av. Central 1920'),
+(20, 20, '4 lomo saltado y 2 tacu tacu', 20, 'Calle Los Olivos 2010');
+
+
+INSERT INTO pedido_repartidor_cliente (id_repartidor, nro_pedido, detalles_pedido, id_cliente, lugar_entrega) VALUES
+(1, 1, '2 Ceviches y 1 Lomo Saltado', 1, 'Av. José Larco 123'),
+(2, 2, '1 Aji de Gallina y 2 Papas a la Huancaina', 2, 'Calle Lima 456'),
+(3, 3, '3 Pollo a la Brasa', 3, 'Jr. Callao 789'),
+(1, 4, '1 Tacu Tacu y 1 Anticucho', 4, 'Av. Brasil 101'),
+(2, 5, '5 Rocoto Relleno', 5, 'Calle Santa Rosa 202'),
+(3, 6, '6 Pachamanca', 6, 'Jr. Zárate 303'),
+(1, 7, '4 Arroz con Pollo', 7, 'Av. Tacna 404'),
+(2, 8, '3 Jalea Mixta y 1 Causa Limeña', 8, 'Calle Unión 505'),
+(3, 9, '10 Tortillas de Verduras', 9, 'Av. Arequipa 606'),
+(1, 10, '1 Sopa a la Criolla', 10, 'Jr. Miraflores 707'),
+(2, 11, '2 Seco de Cabrito', 11, 'Av. La Marina 808'),
+(3, 12, '3 Chupe de Camarones', 12, 'Calle San Martín 909'),
+(1, 13, '1 Sanguchón de Chicharrón', 13, 'Av. Universitaria 1010'),
+(2, 14, '4 Olluquito con Charqui', 14, 'Calle Los Olivos 1111'),
+(3, 15, '5 Causas Limeñas', 15, 'Av. Pardo 1212'),
+(1, 16, '6 Picarones', 16, 'Jr. Lima 1313'),
+(2, 17, '2 Jaleas Mixtas y 1 Aji de Gallina', 17, 'Calle San Juan 1414'),
+(3, 18, '3 Ceviches', 18, 'Av. Libertad 1515'),
+(1, 19, '2 Lomos Saltados', 19, 'Jr. Esperanza 1616'),
+(2, 20, '4 Pollo a la Brasa', 20, 'Calle Primavera 1717');
+
+
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------PROCEDIMIENTOS ALMACENADOS----------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
+
+--1
+
+
+CREATE PROCEDURE info_repartidores2
+@id_repartidor INT = NULL
+AS
+BEGIN
+IF @id_repartidor IS NULL
+BEGIN
+SELECT r.id_repartidor as "ID DEL REPARTIDOR", r.nom_repartidor AS "NOMBRE DEL REPARTIDOR", r.ape_repartidor AS "APELLIDO DEL REPARTIDOR", p.nom_pais AS "NACIONALIDAD", r.tipo_documento AS "TIPO DE DOCUMENTO", r.nro_documento AS "NRO DE DOCUMENTO"  FROM repartidor r, pais p
+where r.id_pais=p.id_pais
+END
+ELSE
+BEGIN
+SELECT r.id_repartidor as "ID DEL REPARTIDOR", r.nom_repartidor AS "NOMBRE DEL REPARTIDOR", r.ape_repartidor AS "APELLIDO DEL REPARTIDOR", p.nom_pais AS "NACIONALIDAD", r.tipo_documento AS "TIPO DE DOCUMENTO", r.nro_documento AS "NRO DE DOCUMENTO" FROM repartidor r, pais p
+WHERE r.id_pais=p.id_pais and id_repartidor = @id_repartidor;
+END
+END;
+
+execute info_repartidores2 
+
+
+--2
+CREATE PROCEDURE distritos_cliente
+@nom_distrito varchar(50)
+AS
+BEGIN
+SELECT c.nom_cliente as "NOMBRE", c.ape_cliente as "APELLIDO", d.nom_distrito as "NOMBRE DEL DISTRITO", c.ubicacion as "UBICACION", c.tipo_ubicacion as "TIPO DE UBICACION" FROM cliente c, distrito d
+WHERE c.id_distrito=d.id_distrito and d.nom_distrito=@nom_distrito
+END
+
+execute distritos_cliente 'chorrillos'
+
+
+--3
+CREATE PROCEDURE cambio_reserva(
+@id_reservacion int,
+@fecha date
+)
+AS
+BEGIN
+update reservacion 
+SET fecha=@fecha 
+WHERE id_reservacion=@id_reservacion
+END
+select * from reservacion
+
+execute cambio_reserva 1, '2024-11-8'
+
+
+--4
+CREATE PROCEDURE lista_reservaciones(
+@fecha date
+)
+AS
+BEGIN
+SELECT * FROM reservacion
+WHERE fecha=@fecha
+END
+
+execute lista_reservaciones '2024-11-08'
+
+
+--5
+CREATE PROCEDURE mozos_mesas(
+@id_mozo int
+)
+AS
+BEGIN
+SELECT m.nom_mozo as "NOMBRE", m.ape_mozo as "APELLIDO", mcm.nro_mesa as "NRO MESA" FROM mozo m, mesa_cliente_mozo mcm
+WHERE m.id_mozo=mcm.id_mozo and m.id_mozo = @id_mozo
+END
+
+execute mozos_mesas 1
+
+
+--6
+CREATE PROCEDURE fechas_delivery(
+@fecha date
+)
+AS
+BEGIN
+SELECT drc.id_delivery as "ID DEL DELIVERY", drc.detalles_delivery AS "DETALLES", drc.fecha AS "FECHA EL DELIVERY" FROM delivery_repartidor_cliente drc
+WHERE drc.fecha=@fecha
+END
+
+execute fechas_delivery '2024-01-10'
+
+
+--7
+CREATE PROCEDURE monto_mesa(
+@nro_mesa int
+)
+AS
+BEGIN
+SELECT mcm.detalles as "DETALLES DE COMPRA", mcm.monto_total AS "MONTO A PAGAR" FROM mesa_cliente_mozo mcm
+WHERE mcm.nro_mesa=@nro_mesa
+END
+
+execute monto_mesa '1'
+
+
+--8
+CREATE PROCEDURE facturas_emitidas(
+@fecha date
+)
+AS
+BEGIN
+SELECT f.nro_factura AS "NRO DE FACTURA", f.fecha AS "FECHA DE FACTURA", f.hora AS "HORA DE LA FACTURA" FROM factura f
+WHERE f.fecha=@fecha
+END
+
+execute facturas_emitidas '2024-11-01'
+
+select * from boleta
+--9
+CREATE PROCEDURE boletas_emitidas(
+@fecha date
+)
+AS
+BEGIN
+SELECT b.nro_boleta AS "NRO DE BOLETA", b.fecha AS "FECHA DE BOLETA", b.hora AS "HORA DE LA BOLETA" FROM boleta b
+WHERE b.fecha=@fecha
+END
+
+execute boletas_emitidas '2024-11-01'
+
+
+--10
+CREATE PROCEDURE nose
+AS
+BEGIN
+SELECT r.id_reservacion as "ID RESERVACION", c.nom_cliente as "NOMBRE CLIENTE", c.ape_cliente as "APELLIDO CLIENTE", r.nro_mesa as "NRO MESA", r.nro_personas as "NRO DE PERSONAS" FROM reservacion r, cliente c 
+WHERE r.id_cliente=c.id_cliente
+END
+
+execute nose 
+
+
+--11
+CREATE PROCEDURE repartidor_pedido
+AS
+BEGIN
+SELECT r.nom_repartidor as "NOMBRE", r.ape_repartidor AS "APELLIDO", prc.nro_pedido AS "NRO DE PEDIDO", prc.lugar_entrega AS "LUGAR DE ENTREGA" FROM pedido_repartidor_cliente prc, repartidor r
+WHERE r.id_repartidor=prc.id_repartidor
+END
+
+execute repartidor_pedido
+
+
+--12
+CREATE PROCEDURE eliminar_pedido(
+@id_prc int
+)
+AS
+BEGIN
+DELETE FROM pedido_repartidor_cliente
+WHERE id_prc=@id_prc
+END
+
+execute eliminar_pedido 20
+
+
+--13
+select * from delivery_repartidor_cliente
+
+
+--14
+CREATE PROCEDURE menu_dia(
+@fecha date
+)
+AS
+BEGIN
+SELECT m.detalles as "MENU", m.fecha as "FECHA" FROM menu m
+WHERE m.fecha=@fecha
+END 
+
+execute menu_dia '2024-10-31'
+
+
+--15
+CREATE PROCEDURE actualizar_reservacion(
+@id_reservacion int
+)
+AS
+BEGIN
+SELECT r.id_reservacion AS "ID RESERVACION", r.fecha AS "FECHA", e.nom_estado AS "ESTADO DE RESERVACION"  FROM reservacion r, estado e
+UPDATE reservacion
+SET reservacion.id_estado = '2'
+where reservacion.id_reservacion=@id_reservacion
+END
+select * from reservacion
+
+execute actualizar_reservacion 1
+
