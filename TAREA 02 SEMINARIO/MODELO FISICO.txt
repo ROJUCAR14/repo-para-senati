@@ -1,0 +1,255 @@
+CREATE TABLE CLIENTE 
+    ( 
+     idCliente INTEGER  NOT NULL , 
+     Nombre    VARCHAR2 (20)  NOT NULL , 
+     Apellido  VARCHAR2 (20)  NOT NULL , 
+     Dni       INTEGER  NOT NULL , 
+     Telefono  INTEGER  NOT NULL 
+    ) 
+;
+
+ALTER TABLE CLIENTE 
+    ADD CONSTRAINT CLIENTE_PK PRIMARY KEY ( idCliente ) ;
+
+CREATE TABLE Oferta 
+    ( 
+     idOferta            INTEGER  NOT NULL , 
+     Precio              INTEGER  NOT NULL , 
+     Detalles            VARCHAR2 (30)  NOT NULL , 
+     PRODUCTO_idProducto INTEGER  NOT NULL , 
+     VENDEDOR_idVendedor INTEGER  NOT NULL , 
+     CLIENTE_idCliente   INTEGER  NOT NULL 
+    ) 
+;
+CREATE UNIQUE INDEX Oferta__IDX ON Oferta 
+    ( 
+     VENDEDOR_idVendedor ASC 
+    ) 
+;
+CREATE UNIQUE INDEX Oferta__IDXv1 ON Oferta 
+    ( 
+     PRODUCTO_idProducto ASC 
+    ) 
+;
+CREATE UNIQUE INDEX Oferta__IDXv2 ON Oferta 
+    ( 
+     CLIENTE_idCliente ASC 
+    ) 
+;
+
+ALTER TABLE Oferta 
+    ADD CONSTRAINT Oferta_PK PRIMARY KEY ( idOferta ) ;
+
+CREATE TABLE PLAN_DE_VENTA 
+    ( 
+     idpPlanventa        INTEGER  NOT NULL , 
+     FechaInicio         DATE  NOT NULL , 
+     FechaFin            DATE  NOT NULL , 
+     Objetivos           VARCHAR2 (50)  NOT NULL , 
+     PRODUCTO_idProducto INTEGER  NOT NULL 
+    ) 
+;
+CREATE UNIQUE INDEX PLAN_DE_VENTA__IDX ON PLAN_DE_VENTA 
+    ( 
+     PRODUCTO_idProducto ASC 
+    ) 
+;
+
+ALTER TABLE PLAN_DE_VENTA 
+    ADD CONSTRAINT PLAN_DE_VENTA_PK PRIMARY KEY ( idpPlanventa ) ;
+
+CREATE TABLE PRODUCTO 
+    ( 
+     idProducto      INTEGER  NOT NULL , 
+     Nombre          VARCHAR2 (20)  NOT NULL , 
+     Caracteristicas VARCHAR2 (30)  NOT NULL , 
+     Precio          INTEGER  NOT NULL 
+    ) 
+;
+
+ALTER TABLE PRODUCTO 
+    ADD CONSTRAINT PRODUCTO_PK PRIMARY KEY ( idProducto ) ;
+
+CREATE TABLE ReporteVentas 
+    ( 
+     idReporte           INTEGER  NOT NULL , 
+     Fecha               DATE  NOT NULL , 
+     Total               INTEGER  NOT NULL , 
+     VENDEDOR_idVendedor INTEGER  NOT NULL 
+    ) 
+;
+CREATE UNIQUE INDEX ReporteVentas__IDX ON ReporteVentas 
+    ( 
+     VENDEDOR_idVendedor ASC 
+    ) 
+;
+
+ALTER TABLE ReporteVentas 
+    ADD CONSTRAINT ReporteVentas_PK PRIMARY KEY ( idReporte ) ;
+
+CREATE TABLE STOCK 
+    ( 
+     idStock             INTEGER  NOT NULL , 
+     cantidad            INTEGER  NOT NULL , 
+     PRODUCTO_idProducto INTEGER  NOT NULL 
+    ) 
+;
+
+ALTER TABLE STOCK 
+    ADD CONSTRAINT STOCK_PK PRIMARY KEY ( idStock ) ;
+
+CREATE TABLE VENDEDOR 
+    ( 
+     idVendedor                 INTEGER  NOT NULL , 
+     Nombre                     VARCHAR2 (20)  NOT NULL , 
+     PLAN_DE_VENTA_idpPlanventa INTEGER  NOT NULL 
+    ) 
+;
+CREATE UNIQUE INDEX VENDEDOR__IDX ON VENDEDOR 
+    ( 
+     PLAN_DE_VENTA_idpPlanventa ASC 
+    ) 
+;
+
+ALTER TABLE VENDEDOR 
+    ADD CONSTRAINT VENDEDOR_PK PRIMARY KEY ( idVendedor ) ;
+
+CREATE TABLE VENTAPRODUCTO 
+    ( 
+     idVenta             INTEGER  NOT NULL , 
+     Detalles            VARCHAR2 (30)  NOT NULL , 
+     Monto               VARCHAR2 (20)  NOT NULL , 
+     MetodoPago          VARCHAR2 (20)  NOT NULL , 
+     VENDEDOR_idVendedor INTEGER  NOT NULL , 
+     Oferta_idOferta     INTEGER  NOT NULL , 
+     CLIENTE_idCliente   INTEGER  NOT NULL 
+    ) 
+;
+CREATE UNIQUE INDEX VENTAPRODUCTO__IDX ON VENTAPRODUCTO 
+    ( 
+     Oferta_idOferta ASC 
+    ) 
+;
+CREATE UNIQUE INDEX VENTAPRODUCTO__IDXv1 ON VENTAPRODUCTO 
+    ( 
+     VENDEDOR_idVendedor ASC 
+    ) 
+;
+CREATE UNIQUE INDEX VENTAPRODUCTO__IDXv2 ON VENTAPRODUCTO 
+    ( 
+     CLIENTE_idCliente ASC 
+    ) 
+;
+
+ALTER TABLE VENTAPRODUCTO 
+    ADD CONSTRAINT VENTAPRODUCTO_PK PRIMARY KEY ( idVenta ) ;
+
+ALTER TABLE Oferta 
+    ADD CONSTRAINT Oferta_CLIENTE_FK FOREIGN KEY 
+    ( 
+     CLIENTE_idCliente
+    ) 
+    REFERENCES CLIENTE 
+    ( 
+     idCliente
+    ) 
+;
+
+ALTER TABLE Oferta 
+    ADD CONSTRAINT Oferta_PRODUCTO_FK FOREIGN KEY 
+    ( 
+     PRODUCTO_idProducto
+    ) 
+    REFERENCES PRODUCTO 
+    ( 
+     idProducto
+    ) 
+;
+
+ALTER TABLE Oferta 
+    ADD CONSTRAINT Oferta_VENDEDOR_FK FOREIGN KEY 
+    ( 
+     VENDEDOR_idVendedor
+    ) 
+    REFERENCES VENDEDOR 
+    ( 
+     idVendedor
+    ) 
+;
+
+ALTER TABLE PLAN_DE_VENTA 
+    ADD CONSTRAINT PLAN_DE_VENTA_PRODUCTO_FK FOREIGN KEY 
+    ( 
+     PRODUCTO_idProducto
+    ) 
+    REFERENCES PRODUCTO 
+    ( 
+     idProducto
+    ) 
+;
+
+ALTER TABLE ReporteVentas 
+    ADD CONSTRAINT ReporteVentas_VENDEDOR_FK FOREIGN KEY 
+    ( 
+     VENDEDOR_idVendedor
+    ) 
+    REFERENCES VENDEDOR 
+    ( 
+     idVendedor
+    ) 
+;
+
+ALTER TABLE STOCK 
+    ADD CONSTRAINT STOCK_PRODUCTO_FK FOREIGN KEY 
+    ( 
+     PRODUCTO_idProducto
+    ) 
+    REFERENCES PRODUCTO 
+    ( 
+     idProducto
+    ) 
+;
+
+ALTER TABLE VENDEDOR 
+    ADD CONSTRAINT VENDEDOR_PLAN_DE_VENTA_FK FOREIGN KEY 
+    ( 
+     PLAN_DE_VENTA_idpPlanventa
+    ) 
+    REFERENCES PLAN_DE_VENTA 
+    ( 
+     idpPlanventa
+    ) 
+;
+
+ALTER TABLE VENTAPRODUCTO 
+    ADD CONSTRAINT VENTAPRODUCTO_CLIENTE_FK FOREIGN KEY 
+    ( 
+     CLIENTE_idCliente
+    ) 
+    REFERENCES CLIENTE 
+    ( 
+     idCliente
+    ) 
+;
+
+ALTER TABLE VENTAPRODUCTO 
+    ADD CONSTRAINT VENTAPRODUCTO_Oferta_FK FOREIGN KEY 
+    ( 
+     Oferta_idOferta
+    ) 
+    REFERENCES Oferta 
+    ( 
+     idOferta
+    ) 
+;
+
+ALTER TABLE VENTAPRODUCTO 
+    ADD CONSTRAINT VENTAPRODUCTO_VENDEDOR_FK FOREIGN KEY 
+    ( 
+     VENDEDOR_idVendedor
+    ) 
+    REFERENCES VENDEDOR 
+    ( 
+     idVendedor
+    ) 
+;
